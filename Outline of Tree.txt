@@ -1,0 +1,67 @@
+/* package codechef; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node {
+    int data;
+    Node right, left;
+    
+    public Node(int data){
+        this.data = data;
+        this.right = this.left = null;
+    }
+}
+class LeftView {
+    int maxLevel = 0;
+    void leftView(Node root, int level, List<Integer> result){
+        if(root == null){
+            return;
+        }
+        if(maxLevel < level){
+            result.add(root.data);
+            maxLevel = level;
+        }
+        leftView(root.left, level + 1, result);
+    }
+    void rightView(Node root, int level, List<Integer> result){
+        if(root == null){
+            return;
+        }
+        if(maxLevel < level){
+            result.add(root.data);
+            maxLevel = level;
+        }
+        rightView(root.right, level + 1, result);
+    }
+}
+class solution{
+    /*
+                1
+            2       3
+         4     5 6     7
+                          8
+         
+    */
+    public static void main(String[] args){
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+        root.right.right.right = new Node(8);
+        
+        List<Integer> result = new ArrayList<>();
+        LeftView instance = new LeftView();
+        instance.leftView(root.left, 1, result);
+        Collections.reverse(result);
+        instance.maxLevel = 0;
+        instance.rightView(root, 1, result);
+        for(Integer item : result){
+            System.out.print(item + " ");
+        }
+    }
+}
