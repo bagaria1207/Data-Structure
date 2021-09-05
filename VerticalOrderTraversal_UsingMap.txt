@@ -1,0 +1,62 @@
+/* package codechef; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node {
+    int data;
+    Node right, left;
+    
+    public Node(int data){
+        this.data = data;
+        this.right = this.left = null;
+    }
+}
+
+class Tree {
+    void insertIntoMap(Map<Integer, List<Integer>> map, Integer key, Integer value){
+        map.putIfAbsent(key, new ArrayList<>());
+        map.get(key).add(value);
+    }
+    void verticalOrderTraversal(Node node, int horizontalDistance, Map<Integer, List<Integer>> map){
+        if(node == null){
+            return;
+        }
+        insertIntoMap(map, horizontalDistance, node.data);
+        verticalOrderTraversal(node.left, horizontalDistance - 1, map);
+        verticalOrderTraversal(node.right, horizontalDistance + 1, map);
+    }
+    void verticalOrderTraversal(Node root){
+        Map<Integer, List<Integer>> map = new TreeMap<>();
+        verticalOrderTraversal(root, 0, map);
+        
+        for(Collection<Integer> collection : map.values()){
+            System.out.println(collection);
+        }
+    }
+}
+class solution{
+    /*
+                1
+            2       3
+         4     5 6     7
+      9                   8
+  10
+         
+    */
+    public static void main(String[] args){
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+        root.right.right.right = new Node(8);
+        root.left.left.left = new Node(9);
+        root.left.left.left.left = new Node(10);
+        Tree binaryTree = new Tree();
+        binaryTree.verticalOrderTraversal(root);
+    }
+}
