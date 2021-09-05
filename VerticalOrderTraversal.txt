@@ -1,0 +1,80 @@
+/* package codechef; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node {
+    int data;
+    Node right, left;
+    
+    public Node(int data){
+        this.data = data;
+        this.right = this.left = null;
+    }
+}
+class Value{
+    int max, min;
+}
+class Tree {
+    Node root;
+    Value val = new Value();
+    
+    void findMinMaxDistanceFromRoot(Node node, Value min, Value max, int horizontalDistance){
+        //Base Case
+        if(node == null){
+            return;
+        }
+        if(horizontalDistance < min.min){
+            min.min = horizontalDistance;
+        } else if(horizontalDistance > max.max){
+            max.max = horizontalDistance;
+        }
+        findMinMaxDistanceFromRoot(node.left, min, max, horizontalDistance - 1);
+        findMinMaxDistanceFromRoot(node.right, min,max, horizontalDistance + 1);
+    }
+    
+    void printVertical(Node node, int line_no, int horizontalDistance){
+        if(node == null){
+            return;
+        }
+        if(horizontalDistance == line_no){
+            System.out.print(node.data + " ");
+        }
+        printVertical(node.left, line_no, horizontalDistance - 1);
+        printVertical(node.right, line_no, horizontalDistance + 1);
+    }
+    
+    void verticalOrderTraversal(Node node){
+        findMinMaxDistanceFromRoot(node, val, val, 0);
+        
+        for(int line_no = val.min; line_no <= val.max; line_no++){
+            printVertical(node, line_no, 0);
+            System.out.println("");
+        }
+    }
+}
+class solution{
+    /*
+                1
+            2       3
+         4     5 6     7
+      9                   8
+  10
+         
+    */
+    public static void main(String[] args){
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+        root.right.right.right = new Node(8);
+        root.left.left.left = new Node(9);
+        root.left.left.left.left = new Node(10);
+        Tree binaryTree = new Tree();
+        binaryTree.verticalOrderTraversal(root);
+    }
+}
